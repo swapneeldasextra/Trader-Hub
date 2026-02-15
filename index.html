@@ -1,399 +1,191 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trader Hub | Premium</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --bg: #f8fafc;
-    }
-    body { 
-      background-color: var(--bg); 
-      color: #0f172a; 
-      font-family: 'Plus Jakarta Sans', sans-serif; 
-      -webkit-tap-highlight-color: transparent;
-    }
-    .premium-card { 
-      background: white; 
-      border-radius: 28px; 
-      border: 1px solid rgba(226, 232, 240, 0.8);
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.04); 
-    }
-    .nav-tab { 
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      cursor: pointer;
-    }
-    .nav-active { 
-      color: var(--primary); 
-      font-weight: 700;
-    }
-    .nav-active::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 100%;
-      height: 3px;
-      background: var(--primary);
-      border-radius: 10px;
-    }
-    input, textarea, select { 
-      background: #f1f5f9 !important; 
-      border: 1px solid #e2e8f0 !important; 
-      transition: all 0.2s ease;
-    }
-    input:focus, textarea:focus {
-      background: white !important;
-      border-color: var(--primary) !important;
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1) !important;
-      outline: none;
-    }
-    .syncing { animation: spin 1s linear infinite; }
-    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    
-    .btn-gradient {
-      background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
-    }
-    .btn-gradient:active { transform: scale(0.98); }
-
-    /* For desktop responsiveness */
-    @media (min-width: 1024px) {
-      .app-container { display: grid; grid-template-columns: 1fr 1.5fr; gap: 2rem; align-items: start; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Prank Button - LOUD Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+        .shake {
+            animation: shake 0.1s;
+            animation-iteration-count: infinite;
+        }
+        .fu-text {
+            position: fixed;
+            font-weight: bold;
+            color: #ef4444;
+            pointer-events: none;
+            z-index: 50;
+            font-family: 'Arial Black', sans-serif;
+            text-shadow: 4px 4px 0px black;
+            transition: all 0.4s ease-out;
+        }
+        #main-btn {
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        #main-btn:active {
+            transform: scale(0.8);
+        }
+        .timer-overlay {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            color: rgba(255, 0, 0, 0.4);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
+    </style>
 </head>
-<body class="min-h-screen">
+<body class="bg-gray-900 flex flex-col items-center justify-center min-h-screen overflow-hidden m-0 transition-colors duration-300">
 
-  <div id="app" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-    
-    <!-- Login Screen -->
-    <div id="login-screen" class="min-h-[80vh] flex flex-col items-center justify-center animate-fade-in">
-      <div class="w-full max-w-md">
-        <div class="text-center mb-10">
-          <div class="inline-flex items-center justify-center w-20 h-20 bg-blue-600 rounded-[2rem] shadow-2xl shadow-blue-200 mb-6 rotate-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-              </svg>
-          </div>
-          <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight">Trader Hub</h1>
-          <p class="text-slate-400 mt-3 font-medium">Elevate your trading strategy.</p>
-        </div>
+    <div id="timer" class="timer-overlay"></div>
+
+    <div id="container" class="text-center p-10 bg-gray-800 rounded-3xl shadow-2xl border-4 border-gray-600 z-10">
+        <h1 class="text-3xl font-black text-white mb-6 uppercase tracking-tighter">⚠️ CRITICAL SYSTEM CHECK</h1>
+        <p class="text-red-400 mb-8 font-mono">Status: Awaiting User Input...</p>
         
-        <div class="premium-card p-8 sm:p-10">
-          <div class="space-y-5">
-            <div>
-              <label class="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Identity</label>
-              <input type="email" id="email" class="w-full p-4 rounded-2xl" placeholder="Email Address">
-            </div>
-            <input type="text" id="username" class="w-full p-4 rounded-2xl" placeholder="Display Name">
-            <input type="password" id="password" class="w-full p-4 rounded-2xl" placeholder="Password">
-            <button onclick="handleAuth()" id="auth-btn" class="w-full btn-gradient text-white font-bold py-4 rounded-2xl shadow-xl shadow-blue-100 mt-4 text-lg">
-              Sign In
-            </button>
-          </div>
-        </div>
-      </div>
+        <button id="main-btn" class="bg-blue-600 hover:bg-blue-500 text-white font-black py-12 px-16 rounded-2xl border-b-8 border-blue-900 shadow-2xl text-2xl uppercase transition-all">
+            FIX SYSTEM ERRORS
+        </button>
     </div>
 
-    <!-- Main Application -->
-    <div id="main-app" class="hidden">
-      <!-- Header Area -->
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10">
-        <div>
-          <h2 class="text-3xl font-extrabold text-slate-900">Hello, <span id="display-name" class="text-blue-600">Trader</span></h2>
-          <p class="text-sm text-slate-400 font-semibold mt-1">Welcome back to your workstation</p>
-        </div>
-        <div class="flex items-center gap-3 w-full sm:w-auto">
-            <button onclick="loadData()" id="sync-btn" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-3 bg-white rounded-2xl border border-slate-200 shadow-sm text-blue-600 font-bold active:bg-slate-50">
-                <svg id="sync-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-                Sync Hub
-            </button>
-            <button onclick="logout()" class="p-3 bg-red-50 rounded-2xl border border-red-100 text-red-500 hover:bg-red-100 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg>
-            </button>
-        </div>
-      </div>
-
-      <!-- Navigation for Mobile/Web -->
-      <div class="flex space-x-10 mb-8 text-sm font-bold border-b border-slate-200 px-2">
-        <button onclick="switchTab('feed')" id="tab-feed" class="pb-4 nav-tab nav-active">TEAM FEED</button>
-        <button onclick="switchTab('trade')" id="tab-trade" class="pb-4 nav-tab text-slate-400">POSITIONS</button>
-      </div>
-
-      <!-- Content Area -->
-      <div class="app-container">
+    <script>
+        const btn = document.getElementById('main-btn');
+        const body = document.body;
+        const timerDisplay = document.getElementById('timer');
         
-        <!-- Feed Section -->
-        <div id="feed-section" class="space-y-6">
-          <div class="premium-card p-6">
-            <label class="text-[10px] font-black text-slate-400 tracking-widest uppercase mb-3 block">Create Update</label>
-            <textarea id="post-input" class="w-full p-4 resize-none text-sm rounded-2xl" rows="3" placeholder="Share market sentiment or analysis..."></textarea>
-            <div class="flex justify-end mt-4">
-              <button onclick="postUpdate()" id="post-btn" class="btn-gradient text-white px-10 py-3 rounded-xl text-sm font-bold shadow-lg shadow-blue-100">Broadcast</button>
-            </div>
-          </div>
-          <div id="feed-content" class="grid grid-cols-1 gap-4">
-              <!-- Posts -->
-          </div>
-        </div>
+        let audioCtx = null;
+        let prankActive = false;
 
-        <!-- Trade Section -->
-        <div id="trade-section" class="hidden lg:block">
-          <div class="premium-card p-8 mb-8">
-            <div class="flex items-center gap-3 mb-6">
-                <div class="w-1.5 h-6 bg-blue-600 rounded-full"></div>
-                <h3 class="font-extrabold text-xl text-slate-800">New Entry</h3>
-            </div>
-            <div class="grid grid-cols-2 gap-4 mb-4">
-              <div class="space-y-2">
-                  <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">Asset</label>
-                  <input type="text" id="trade-pair" placeholder="BTC/USDT" class="w-full p-4 rounded-xl text-sm font-semibold">
-              </div>
-              <div class="space-y-2">
-                  <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">Type</label>
-                  <select id="trade-action" class="w-full p-4 rounded-xl text-sm font-bold appearance-none cursor-pointer">
-                    <option value="BUY">LONG</option>
-                    <option value="SELL">SHORT</option>
-                  </select>
-              </div>
-            </div>
-            <div class="grid grid-cols-3 gap-4 mb-8">
-              <div class="space-y-2">
-                  <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">Entry</label>
-                  <input type="number" id="trade-entry" placeholder="0.00" class="w-full p-4 rounded-xl text-sm">
-              </div>
-              <div class="space-y-2">
-                  <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">T.P</label>
-                  <input type="number" id="trade-tp" placeholder="0.00" class="w-full p-4 rounded-xl text-sm">
-              </div>
-              <div class="space-y-2">
-                  <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">S.L</label>
-                  <input type="number" id="trade-sl" placeholder="0.00" class="w-full p-4 rounded-xl text-sm">
-              </div>
-            </div>
-            <button onclick="logTrade()" id="trade-btn" class="w-full btn-gradient text-white py-5 rounded-2xl font-bold shadow-xl shadow-blue-100 text-lg">Log Position</button>
-          </div>
-          
-          <h4 class="text-xs font-black text-slate-400 tracking-widest mb-4 px-2">LOG HISTORY</h4>
-          <div id="trade-list" class="space-y-4"></div>
-        </div>
+        // NEW: Much louder and harsher "obnoxious" sound generator
+        function playFunnySound(intensity = 1) {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Create multiple oscillators for a "thick" annoying sound
+            const osc1 = audioCtx.createOscillator();
+            const osc2 = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            // Random dissonant frequencies
+            const freq = 100 + (Math.random() * 800 * intensity);
+            
+            osc1.type = 'sawtooth';
+            osc1.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            osc1.frequency.exponentialRampToValueAtTime(freq * 0.1, audioCtx.currentTime + 0.2);
+            
+            osc2.type = 'square';
+            osc2.frequency.setValueAtTime(freq * 1.5, audioCtx.currentTime); // Dissonant interval
+            osc2.frequency.exponentialRampToValueAtTime(freq * 3, audioCtx.currentTime + 0.2);
 
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // AUTO-ADDED SCRIPT URL
-    const scriptUrl = "https://script.google.com/macros/s/AKfycbwo8AYMh2L3flnkJSz2FQUmWB7O7YeY94NGcLby8_vFnXbzB7ieiOgVsN2He-AIGVzrAg/exec";
-    
-    let user = { name: '', email: '' };
-    let isGoogleEnv = typeof google !== 'undefined' && google.script && google.script.run;
-
-    // Check for existing session
-    window.onload = function() {
-      const savedUser = localStorage.getItem('trader_hub_user');
-      if (savedUser) {
-        user = JSON.parse(savedUser);
-        showMainApp();
-      }
-    };
-
-    async function syncWithDatabase(methodName, params, successCallback) {
-      if (isGoogleEnv) {
-        google.script.run.withSuccessHandler(successCallback).withFailureHandler(err => {
-          console.error(err);
-          alert("Database Error");
-        })[methodName](...params);
-      } 
-      else {
-        try {
-          const finalUrl = `${scriptUrl}?action=${methodName}&data=${encodeURIComponent(JSON.stringify(params))}`;
-          const response = await fetch(finalUrl);
-          const resData = await response.json();
-          successCallback(resData);
-        } catch (err) {
-          console.error(err);
-          // Fallback only for auth testing
-          if(methodName === 'authenticateUser') successCallback({ success: true, username: params[1] });
+            // Loudness control
+            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime); // High volume
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+            
+            osc1.connect(gainNode);
+            osc2.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            osc1.start();
+            osc2.start();
+            osc1.stop(audioCtx.currentTime + 0.2);
+            osc2.stop(audioCtx.currentTime + 0.2);
         }
-      } 
-    }
 
-    function handleAuth() {
-      const email = document.getElementById('email').value;
-      const name = document.getElementById('username').value;
-      const pass = document.getElementById('password').value;
-      const btn = document.getElementById('auth-btn');
+        function createFU() {
+            const el = document.createElement('div');
+            el.className = 'fu-text';
+            el.innerText = 'FU!';
+            
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            const size = Math.floor(Math.random() * 120) + 40;
+            const rotation = Math.floor(Math.random() * 360);
+            
+            el.style.left = x + 'px';
+            el.style.top = y + 'px';
+            el.style.fontSize = size + 'px';
+            el.style.transform = `rotate(${rotation}deg)`;
+            
+            body.appendChild(el);
+            
+            // Disappear effect
+            setTimeout(() => {
+                el.style.transform = `rotate(${rotation + 90}deg) scale(2)`;
+                el.style.opacity = '0';
+            }, 50);
 
-      if(!email || !name || !pass) return;
-      
-      btn.innerText = "Verifying...";
-      btn.disabled = true;
-
-      syncWithDatabase('authenticateUser', [email, name, pass], (res) => {
-        if(res && res.success) {
-          user = { name: res.username || name, email: email };
-          localStorage.setItem('trader_hub_user', JSON.stringify(user));
-          showMainApp();
-        } else {
-          alert(res?.message || "Auth Failed");
-          btn.innerText = "Sign In";
-          btn.disabled = false;
+            setTimeout(() => el.remove(), 500);
         }
-      });
-    }
 
-    function showMainApp() {
-      document.getElementById('login-screen').classList.add('hidden');
-      document.getElementById('main-app').classList.remove('hidden');
-      document.getElementById('display-name').innerText = user.name;
-      loadData();
-    }
+        btn.addEventListener('click', () => {
+            if (prankActive) return;
+            prankActive = true;
+            
+            let secondsLeft = 60;
+            btn.innerText = "DESTROYING FILES...";
+            btn.style.backgroundColor = 'black';
+            btn.style.color = 'red';
+            btn.style.borderColor = 'red';
 
-    function logout() {
-      localStorage.removeItem('trader_hub_user');
-      location.reload();
-    }
+            const masterInterval = setInterval(() => {
+                if (secondsLeft <= 0) {
+                    clearInterval(masterInterval);
+                    body.classList.remove('shake');
+                    body.style.backgroundColor = '#111827';
+                    btn.innerText = "PRANK OVER";
+                    timerDisplay.innerText = "SYSTEM RECOVERED... PSYCHE!";
+                    return;
+                }
 
-    function loadData() {
-      const icon = document.getElementById('sync-icon');
-      icon.classList.add('syncing');
+                // Relief periods every 10 seconds
+                const isReliefPeriod = secondsLeft % 10 === 0 && secondsLeft !== 60;
+                
+                if (isReliefPeriod) {
+                    body.classList.remove('shake');
+                    body.style.backgroundColor = '#1f2937';
+                } else {
+                    body.classList.add('shake');
+                    body.style.backgroundColor = (secondsLeft % 2 === 0) ? '#7f1d1d' : '#450a0a';
+                    
+                    const intensity = 1 + (60 - secondsLeft) / 15;
+                    playFunnySound(intensity);
+                    
+                    for(let i=0; i < Math.ceil(intensity); i++) {
+                        setTimeout(createFU, i * 40);
+                    }
+                }
 
-      syncWithDatabase('getAppData', [], (data) => {
-        if(data) {
-          renderFeed(data.posts);
-          renderTrades(data.trades);
-        }
-        setTimeout(() => icon.classList.remove('syncing'), 600);
-      });
-    }
+                timerDisplay.innerText = `CRITICAL_FAILURE: 0x${secondsLeft.toString(16).toUpperCase()}`;
+                secondsLeft--;
+            }, 1000);
 
-    function postUpdate() {
-      const content = document.getElementById('post-input').value;
-      if(!content) return;
-      const btn = document.getElementById('post-btn');
-      btn.innerText = "Posting...";
-
-      syncWithDatabase('saveData', ['POST', { id: Date.now(), user: user.name, content: content }], () => {
-        document.getElementById('post-input').value = "";
-        btn.innerText = "Broadcast";
-        loadData();
-      });
-    }
-
-    function logTrade() {
-      const payload = {
-        user: user.name,
-        pair: document.getElementById('trade-pair').value,
-        action: document.getElementById('trade-action').value,
-        entry: document.getElementById('trade-entry').value,
-        tp: document.getElementById('trade-tp').value,
-        sl: document.getElementById('trade-sl').value
-      };
-
-      if(!payload.pair || !payload.entry) return alert("Fill Asset & Entry");
-      
-      const btn = document.getElementById('trade-btn');
-      btn.innerText = "Logging Position...";
-
-      syncWithDatabase('saveData', ['TRADE', payload], () => {
-        document.getElementById('trade-pair').value = "";
-        document.getElementById('trade-entry').value = "";
-        btn.innerText = "Log Position";
-        loadData();
-      });
-    }
-
-    function switchTab(tab) {
-      const isMobile = window.innerWidth < 1024;
-      if (isMobile) {
-        document.getElementById('feed-section').classList.toggle('hidden', tab !== 'feed');
-        document.getElementById('trade-section').classList.toggle('hidden', tab !== 'trade');
-      } else {
-        // Desktop always shows both or switches focus
-        document.getElementById('feed-section').classList.remove('hidden');
-        document.getElementById('trade-section').classList.remove('hidden');
-      }
-      
-      document.getElementById('tab-feed').className = tab === 'feed' ? 'pb-4 nav-tab nav-active' : 'pb-4 nav-tab text-slate-400';
-      document.getElementById('tab-trade').className = tab === 'trade' ? 'pb-4 nav-tab nav-active' : 'pb-4 nav-tab text-slate-400';
-    }
-
-    function renderFeed(posts) {
-      let html = "";
-      if (!posts || posts.length <= 1) {
-        document.getElementById('feed-content').innerHTML = "<div class='premium-card p-10 text-center text-slate-400'>No activity yet</div>";
-        return;
-      }
-      for(let i = posts.length - 1; i >= 1; i--) {
-        const time = posts[i][3] ? new Date(posts[i][3]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "now";
-        html += `
-          <div class="premium-card p-6 border-l-4 border-l-blue-500 animate-fade-in">
-            <div class="flex items-center justify-between mb-4">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center font-bold">
-                  ${posts[i][1].charAt(0)}
-                </div>
-                <div>
-                  <div class="font-bold text-slate-900">@${posts[i][1]}</div>
-                  <div class="text-[10px] font-bold text-slate-300 uppercase">${time}</div>
-                </div>
-              </div>
-            </div>
-            <p class="text-slate-600 text-sm leading-relaxed">${posts[i][2]}</p>
-          </div>`;
-      }
-      document.getElementById('feed-content').innerHTML = html;
-    }
-
-    function renderTrades(trades) {
-      let html = "";
-      if (!trades || trades.length <= 1) {
-        document.getElementById('trade-list').innerHTML = "<div class='p-10 text-center text-slate-400'>Empty log</div>";
-        return;
-      }
-      for(let i = trades.length - 1; i >= 1; i--) {
-        const isBuy = trades[i][2] === 'BUY';
-        const colorClass = isBuy ? 'text-green-600' : 'text-red-600';
-        const bgClass = isBuy ? 'bg-green-50' : 'bg-red-50';
-        
-        html += `
-          <div class="premium-card p-5 flex justify-between items-center group hover:border-blue-200 transition-all">
-            <div class="flex items-center gap-4">
-                <div class="${bgClass} ${colorClass} px-3 py-1.5 rounded-xl text-[10px] font-black tracking-widest">
-                    ${trades[i][2]}
-                </div>
-                <div>
-                    <div class="font-extrabold text-slate-900">${trades[i][1]}</div>
-                    <div class="text-[10px] font-bold text-slate-400">ENTRY: ${trades[i][3]}</div>
-                </div>
-            </div>
-            <div class="text-right">
-                <div class="text-xs font-bold text-green-500">TP: ${trades[i][4]}</div>
-                <div class="text-xs font-bold text-red-400">SL: ${trades[i][5]}</div>
-            </div>
-          </div>`;
-      }
-      document.getElementById('trade-list').innerHTML = html;
-    }
-
-    // Handle initial tab state based on width
-    window.addEventListener('resize', () => {
-        if(window.innerWidth >= 1024) {
-            document.getElementById('trade-section').classList.remove('hidden');
-            document.getElementById('feed-section').classList.remove('hidden');
-        }
-    });
-  </script>
+            // Chaos burst
+            const burstInterval = setInterval(() => {
+                if (secondsLeft <= 0) {
+                    clearInterval(burstInterval);
+                    return;
+                }
+                if (secondsLeft % 10 !== 0) {
+                    createFU();
+                    if (Math.random() > 0.7) playFunnySound(1.5);
+                }
+            }, 100);
+        });
+    </script>
 </body>
 </html>
